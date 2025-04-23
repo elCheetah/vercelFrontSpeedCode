@@ -1,10 +1,10 @@
 'use client';
 
-import TargetaNotificacion from '../components/noti/compnot/TarjetaNotificacion';
+import TarjetaNotificacion from '../components/noti/compnot/TarjetaNotificacion';
 
 export default function NotificacionesPage() {
   const notificaciones = [
-    {
+    { 
       titulo: 'Tiempo de renta concluido',
       descripcion: 'Tu vehículo Nissan Sentra ya concluyó su tiempo de renta con el arrendatario El Señor X',
       fecha: '03/31/2025, 21:00',
@@ -40,7 +40,7 @@ export default function NotificacionesPage() {
       {/* Lista de notificaciones */}
       <div className="px-6 space-y-4">
         {notificaciones.map((n, i) => (
-          <TargetaNotificacion key={i} {...n} />
+          <TarjetaNotificacion key={i} {...n} />
         ))}
       </div>
     </div>
