@@ -7,6 +7,9 @@ import axios from 'axios';
 interface PagoQRProps {
   loading: boolean;
   qrImage: string;
+  idVehiculo: number | string;
+  monto: any;
+  handleConfirmacionQR: () => void;
 }
 
 const PagoQR: FC<PagoQRProps> = ({ loading, qrImage}) => {

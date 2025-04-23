@@ -84,9 +84,14 @@ const VistaPago = () => {
             <button
               onClick={() => {
                 const imageWindow = window.open("", "_blank");
-                imageWindow.document.write(
-                  `<img src="http://localhost:3000/imagenes/${vehiculo.imagen}" style="width: 100%; height: auto;" />`
-                );
+                if (imageWindow) {
+                  imageWindow.document.write(
+                    `<img src="http://localhost:3000/imagenes/${vehiculo.imagen}" style="width: 100%; height: auto;" />`
+                  );
+                } else {
+                  // Opcional: Manejar el caso en que no se puede abrir la ventana
+                  alert("Por favor permite ventanas emergentes para ver la imagen");
+                }
               }}
               className="absolute bottom-2 right-2 bg-blue-600 text-white p-2 rounded-full hover:bg-blue-700 transition"
               title="Ver imagen en pantalla completa"

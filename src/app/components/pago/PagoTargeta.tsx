@@ -19,6 +19,8 @@ interface PagoTarjetaProps {
   setCvv: (value: string) => void;
   setDireccion: (value: string) => void;
   setCorreoElectronico: (value: string) => void;
+  handleConfirmacion: () => void;
+  onCancel: () => void;
 }
 
 const PagoTarjeta: FC<PagoTarjetaProps> = ({
