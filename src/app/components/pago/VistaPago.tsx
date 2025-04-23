@@ -1,21 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import ModalSeleccionPago from "./ModalSeleccionPago";
 import PagoTargeta from "./PagoTargeta";
 import PagoQR from "./PagoQR";
 import "../../globals.css";
 
-const VistaPago = () => {
-  const router = useRouter();
-  const searchParams = useSearchParams();
+interface VistaPagoProps {
+  id: string | null;
+  monto: string | null;
+}
 
+const VistaPago = ({ id, monto }: VistaPagoProps) => {
+  const router = useRouter();
   const [modoPago, setModoPago] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [qrImage, setQrImage] = useState("");
-
   const [idVehiculo, setIdVehiculo] = useState<number | null>(null);
   const [vehiculo, setVehiculo] = useState<any>(null);
   const [idReserva, setIdReserva] = useState<number | null>(null);
@@ -28,15 +30,12 @@ const VistaPago = () => {
   const [mes, setMes] = useState("");
   const [anio, setAnio] = useState("");
 
-  // ✅ Obtener ID desde la URL
   useEffect(() => {
-    const idParam = searchParams.get("id");
-    if (idParam) {
-      setIdVehiculo(parseInt(idParam));
+    if (id) {
+      setIdVehiculo(parseInt(id));
     }
-  }, [searchParams]);
+  }, [id]);
 
-  // ✅ Obtener detalles del vehículo desde la API
   useEffect(() => {
     if (idVehiculo) {
       axios
@@ -89,7 +88,6 @@ const VistaPago = () => {
                     `<img src="http://localhost:3000/imagenes/${vehiculo.imagen}" style="width: 100%; height: auto;" />`
                   );
                 } else {
-                  // Opcional: Manejar el caso en que no se puede abrir la ventana
                   alert("Por favor permite ventanas emergentes para ver la imagen");
                 }
               }}
@@ -140,7 +138,7 @@ const VistaPago = () => {
 
             <div className="flex justify-between px-4 text-lg font-semibold text-[#14213D] pt-2 border-t border-gray-200">
               <span>Monto total a pagar:</span>
-              <span>{vehiculo.tarifa} Bs.</span>
+              <span>{monto || vehiculo.tarifa} Bs.</span>
             </div>
           </div>
         </div>
@@ -175,7 +173,7 @@ const VistaPago = () => {
           qrImage={qrImage}
           handleConfirmacionQR={handleConfirmacionQR}
           idVehiculo={vehiculo.idvehiculo}
-          monto={vehiculo.tarifa}
+          monto={monto ? parseFloat(monto) : vehiculo.tarifa}
         />
       ) : null}
     </div>

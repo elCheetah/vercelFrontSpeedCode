@@ -5,19 +5,16 @@ import { useRouter } from "next/navigation";
 import axios from "axios";
 import "../../globals.css";
 
-export default function ReservaActiva() {
-  const router = useRouter();
+interface ReservaActivaProps {
+  id: number | null;
+}
 
+export default function ReservaActiva({ id }: ReservaActivaProps) {
+  const router = useRouter();
   const [vehiculo, setVehiculo] = useState<any>(null);
   const [estadoTiempo, setEstadoTiempo] = useState<number>(0);
   const [idReserva, setIdReserva] = useState<number | null>(null);
-  const [idVehiculo, setIdVehiculo] = useState<number | null>(null);
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get("id");
-    if (id) setIdVehiculo(parseInt(id));
-  }, []);
+  const [idVehiculo, setIdVehiculo] = useState<number | null>(id);
 
   useEffect(() => {
     if (idVehiculo) {
@@ -81,10 +78,8 @@ export default function ReservaActiva() {
     }
   };
 
-  
-
   if (!vehiculo) {
-    return <p>Cargando información de la reserva...</p>;
+    return <p className="text-center mt-8">Cargando información de la reserva...</p>;
   }
 
   return (
