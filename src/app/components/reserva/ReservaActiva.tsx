@@ -12,7 +12,8 @@ interface ReservaActivaProps {
 export default function ReservaActiva({ id }: ReservaActivaProps) {
   const router = useRouter();
   const [vehiculo, setVehiculo] = useState<any>(null);
-  const [estadoTiempo, setEstadoTiempo] = useState<number>(0);
+  //const [estadoTiempo, setEstadoTiempo] = useState<number>(0);
+  const [estadoTiempo, setEstadoTiempo] = useState<number>(20);
   const [idReserva, setIdReserva] = useState<number | null>(null);
   const [idVehiculo, setIdVehiculo] = useState<number | null>(id);
   //const [showCancelModal, setShowCancelModal] = useState(false); //added */
@@ -39,7 +40,7 @@ export default function ReservaActiva({ id }: ReservaActivaProps) {
     }
   }, [idVehiculo]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const intervalo = setInterval(() => {
       if (idReserva) {
         axios
@@ -57,6 +58,43 @@ export default function ReservaActiva({ id }: ReservaActivaProps) {
 
     return () => clearInterval(intervalo);
   }, [idReserva]);
+*/
+
+useEffect(() => {
+  if (idVehiculo) {
+    axios
+      .get(`https://vercel-back-speed-code.vercel.app/vehiculo/obtenerDetalleVehiculo/${idVehiculo}`)
+      .then((response) => {
+        if (response.data.success) {
+          setVehiculo(response.data.data);
+          setIdReserva(response.data.data.reserva.idreserva);
+          console.log("ID de reserva obtenido del servidor:", response.data.data.reserva.idreserva);
+        }
+      })
+      .catch((error) => {
+        console.error("Error al obtener detalles del vehículo:", error);
+      });
+  }
+}, [idVehiculo]);
+
+
+useEffect(() => {
+  setEstadoTiempo(20); // reinicia a 20 cada vez que se entra
+
+  const intervalo = setInterval(() => {
+    setEstadoTiempo((prev) => {
+      if (prev <= 1) {
+        clearInterval(intervalo);
+        router.push("/reserva-expirada");
+        return 0;
+      }
+      return prev - 1;
+    });
+  }, 1000);
+
+  return () => clearInterval(intervalo);
+}, []);
+
 
   const formatoTiempo = (segundos: number) => {
     const hrs = Math.floor(segundos / 3600);
