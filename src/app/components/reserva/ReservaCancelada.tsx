@@ -1,12 +1,12 @@
 'use client'
 
-import { useState } from 'react'; // Añade esto al inicio del archivo
+import { useState } from 'react'; 
 
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import '../../globals.css'
 
-export default function ReservaExpirada() {
+export default function ReservaCancelada() {
   const router = useRouter()
   const [showModal, setShowModal] = useState(false); // Estado del modal
 
@@ -19,22 +19,22 @@ export default function ReservaExpirada() {
 
   return (
     <div className="container text-center p-6 space-y-4">
-      <h1 className="text-2xl font-bold text-[#212E5E]">Tiempo Para Reserva Expirada</h1>
+      <h1 className="text-2xl font-bold text-[#212E5E]">Reserva Cancelada</h1>
 
       
 
       <div className="text-6xl">
- {/* el emoji */}
+ {/* el emoji  */}
   <img 
     src="https://cdn.pixabay.com/photo/2014/10/06/04/29/sad-476039_1280.png" 
-    alt="Reserva expirada"
+    alt="Reserva cancelada"
     className="w-40 h-35 mx-auto" // Ajusta tamaño según necesites
     loading="lazy"
   />
 </div>
 
       <p className="text-gray-700">
-        El tiempo límite para pagar ha sido superado.<br />
+        La reserva fue cancelada<br />
         Puedes intentar reservar nuevamente
       </p>
 
@@ -53,6 +53,7 @@ export default function ReservaExpirada() {
           <div className="modal-buttons flex justify-center gap-4 mt-4">
             <button id="confirmYes" onClick={() => router.push('/home')} className="bg-[#FCA311] text-white px-3 py-1 rounded">Sí</button>
             <button id="confirmNo" onClick={() => setShowModal(false)} className="bg-[#FCA311] text-white px-3 py-1 rounded">No</button>
+
           </div>
         </div>
       </div>

@@ -15,6 +15,7 @@ export default function ReservaActiva({ id }: ReservaActivaProps) {
   const [estadoTiempo, setEstadoTiempo] = useState<number>(0);
   const [idReserva, setIdReserva] = useState<number | null>(null);
   const [idVehiculo, setIdVehiculo] = useState<number | null>(id);
+  //const [showCancelModal, setShowCancelModal] = useState(false); //added */
 
   useEffect(() => {
     if (idVehiculo) {
@@ -24,11 +25,12 @@ export default function ReservaActiva({ id }: ReservaActivaProps) {
           if (response.data.success) {
             setVehiculo(response.data.data);
             setIdReserva(response.data.data.reserva.idreserva);
+            console.log("ID de reserva obtenido del servidor:", response.data.data.reserva.idreserva);
             const fechaFin = new Date(response.data.data.reserva.fecha_fin);
             const tiempoRestante = Math.floor(
               (fechaFin.getTime() - Date.now()) / 1000
-            );
-            setEstadoTiempo(tiempoRestante > 0 ? tiempoRestante : 0);
+              );
+            
           }
         })
         .catch((error) => {
@@ -66,11 +68,12 @@ export default function ReservaActiva({ id }: ReservaActivaProps) {
   };
 
   const cancelarReserva = async (porTiempo = false) => {
+    console.log("ID de reserva antes de cancelar:", idReserva);
     if (idReserva) {
       try {
-        await axios.post(`https://vercel-back-speed-code.vercel.app/reservas/cancelar/${idReserva}`);
+        await axios.post(`https://vercel-back-speed-code.vercel.app/reservas/cancelar/${idReserva}`, {});
         alert("Reserva cancelada correctamente");
-        router.push("/reserva-expirada");
+        router.push("/reserva-cancelada");
       } catch (error) {
         console.error("Error al cancelar:", error);
         alert("Hubo un error al cancelar la reserva. Intenta nuevamente.");
@@ -117,11 +120,12 @@ export default function ReservaActiva({ id }: ReservaActivaProps) {
           Confirmar Pago
         </button>
         <button
-          onClick={() => cancelarReserva(false)}
+          onClick={() => cancelarReserva(false)}//onClick={() => {console.log("Valor de idReserva antes de abrir el modal:", idReserva);setShowCancelModal(true);}}
           className="bg-[#FCA311] hover:bg-[#e2910f] text-white px-6 py-3 rounded-xl shadow-lg transition duration-200 transform hover:scale-105"
         >
           Cancelar Reserva
         </button>
+
       </div>
     </div>
   );
